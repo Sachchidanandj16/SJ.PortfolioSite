@@ -41,6 +41,10 @@
             overflow-x: hidden;
         }
 
+        body.menu-open {
+            overflow: hidden;
+        }
+
         h1, h2, h3, h4 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
@@ -56,6 +60,7 @@
 
         section {
             padding: 80px 0;
+            scroll-margin-top: 90px;
         }
 
         .section-title {
@@ -117,10 +122,11 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.98);
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
             padding: 18px 0;
             transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
 
         header.scrolled {
@@ -139,6 +145,7 @@
             font-weight: 800;
             color: var(--primary);
             text-decoration: none;
+            z-index: 1001;
         }
 
         .logo span {
@@ -180,11 +187,26 @@
 
         .mobile-menu-btn {
             display: none;
-            background: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: white;
             border: none;
-            font-size: 1.5rem;
-            color: var(--text-dark);
+            border-radius: 8px;
+            font-size: 1.3rem;
             cursor: pointer;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .mobile-menu-btn.active {
+            background: var(--primary-dark);
         }
 
         /* Hero Section */
@@ -751,6 +773,11 @@
         }
 
         @media (max-width: 768px) {
+            /* Improved mobile menu styles */
+            nav {
+                position: relative;
+            }
+            
             .nav-links {
                 position: fixed;
                 top: 70px;
@@ -758,21 +785,62 @@
                 width: 100%;
                 background-color: white;
                 flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                transform: translateY(-100%);
+                padding: 30px 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                transform: translateY(-150%);
                 opacity: 0;
-                transition: var(--transition);
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 z-index: 999;
+                border-radius: 0 0 15px 15px;
+                max-height: 0;
+                overflow: hidden;
+                gap: 0;
             }
             
             .nav-links.active {
                 transform: translateY(0);
                 opacity: 1;
+                visibility: visible;
+                max-height: 400px;
+            }
+            
+            .nav-links a {
+                padding: 18px 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                width: 100%;
+                font-size: 1.1rem;
+                display: block;
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-links a:after {
+                display: none;
             }
             
             .mobile-menu-btn {
-                display: block;
+                display: flex;
+            }
+            
+            /* Adjust header for mobile */
+            header {
+                padding: 15px 0;
+            }
+            
+            header.scrolled {
+                padding: 10px 0;
+            }
+            
+            .logo {
+                font-size: 1.6rem;
+            }
+            
+            /* Adjust hero section for mobile menu */
+            .hero {
+                padding-top: 120px;
             }
             
             .section-title {
@@ -782,26 +850,37 @@
             .hero-text h1 {
                 font-size: 2.5rem;
             }
-            
-            .hero {
-                padding-top: 120px;
-            }
         }
 
         @media (max-width: 576px) {
+            .nav-links a {
+                padding: 20px 0;
+                font-size: 1.15rem;
+            }
+            
+            .mobile-menu-btn {
+                width: 46px;
+                height: 46px;
+            }
+            
+            .hero {
+                padding-top: 100px;
+            }
+            
             .hero-text h1 {
                 font-size: 2.2rem;
             }
             
             .hero-btns {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
             }
             
             .btn {
                 width: 100%;
-                max-width: 250px;
+                max-width: 100%;
                 text-align: center;
+                margin-bottom: 10px;
             }
             
             section {
@@ -811,6 +890,10 @@
             .project-links {
                 flex-direction: column;
             }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -818,7 +901,7 @@
     <!-- Header & Navigation -->
     <header id="header">
         <div class="container nav-container">
-            <a href="#" class="logo">SJ<span>.</span></a>
+            <a href="#home" class="logo">SJ<span>.</span></a>
             
             <nav>
                 <div class="nav-links" id="navLinks">
@@ -1182,13 +1265,13 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-about">
-                    <a href="#" class="footer-logo">Sachchidanand Jha</a>
+                    <a href="#home" class="footer-logo">Sachchidanand Jha</a>
                     <p>Recent B.Tech Computer Science graduate specializing in full-stack development with MERN stack, Java, and database management.</p>
                     <div class="social-icons">
                         <a href="https://www.linkedin.com/in/sachchidanand-jha-b8b3a3250/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://github.com/Sachchidanandj16"><i class="fab fa-github"></i></a>
-                        <a href="https://wa.link/gcaabj"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/sachchi_881/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/Sachchidanandj16" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://wa.link/gcaabj" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/sachchi_881/" target="_blank"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 
@@ -1206,11 +1289,11 @@
                 <div class="footer-links">
                     <h4>Technologies</h4>
                     <ul>
-                        <li><a href="#">MERN Stack</a></li>
-                        <li><a href="#">Java & Spring Boot</a></li>
-                        <li><a href="#">React & Next.js</a></li>
-                        <li><a href="#">Database Design</a></li>
-                        <li><a href="#">API Development</a></li>
+                        <li><a href="#projects">MERN Stack</a></li>
+                        <li><a href="#skills">Java & Spring Boot</a></li>
+                        <li><a href="#skills">React & Next.js</a></li>
+                        <li><a href="#skills">Database Design</a></li>
+                        <li><a href="#projects">API Development</a></li>
                     </ul>
                 </div>
             </div>
@@ -1224,25 +1307,67 @@
 
     <!-- JavaScript -->
     <script>
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle - IMPROVED VERSION
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuBtn.addEventListener('click', () => {
+        const body = document.body;
+
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
             navLinks.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
             mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
+            
+            // Toggle body scroll
+            if (navLinks.classList.contains('active')) {
+                body.classList.add('menu-open');
+            } else {
+                body.classList.remove('menu-open');
+            }
         });
-        
+
         // Close mobile menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.classList.remove('menu-open');
             });
         });
-        
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.classList.remove('menu-open');
+            }
+        });
+
+        // Close mobile menu on window resize (if resized to larger screen)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.classList.remove('menu-open');
+            }
+        });
+
+        // Close mobile menu with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.classList.remove('menu-open');
+            }
+        });
+
         // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
@@ -1252,7 +1377,7 @@
                 header.classList.remove('scrolled');
             }
         });
-        
+
         // Form submission
         const contactForm = document.getElementById('contactForm');
         contactForm.addEventListener('submit', (e) => {
@@ -1263,7 +1388,7 @@
             alert('Thank you for your message! I will get back to you soon.');
             contactForm.reset();
         });
-        
+
         // Scroll animations
         const observerOptions = {
             threshold: 0.1,
@@ -1277,12 +1402,12 @@
                 }
             });
         }, observerOptions);
-        
+
         // Observe all fade-in elements
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
-        
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1300,7 +1425,7 @@
                 }
             });
         });
-        
+
         // Initialize animations on page load
         window.addEventListener('DOMContentLoaded', () => {
             // Trigger initial fade-in for elements already in view
